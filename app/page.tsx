@@ -204,7 +204,7 @@ export default function DashboardPage() {
                 Coherent Dashboard
               </h1>
               <h2 className="text-sm text-black">
-                {dashboardName || 'Global Normothermic Machine Perfusion Market'}
+                {dashboardName || 'Global Mill Roll Market'}
               </h2>
             </div>
           </div>
@@ -212,10 +212,27 @@ export default function DashboardPage() {
         </div>
 
         {/* Global KPI Cards */}
-        <div className="mb-6">
+        <div className="mb-4">
           <GlobalKPICards />
         </div>
 
+        <div
+          role="alert"
+          className="mb-6 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-950 shadow-sm"
+        >
+          <p>
+            <span className="font-semibold">NOTE: </span>
+            All the data in the dashboard is demo data. No real-world data is related to this. Source:{' '}
+            <a
+              href="https://github.com/wilbert-hue/mill"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium text-amber-900 underline decoration-amber-400 underline-offset-2 hover:text-amber-950"
+            >
+              https://github.com/wilbert-hue/mill
+            </a>
+          </p>
+        </div>
 
         <div className="grid grid-cols-12 gap-6">
           {/* Sidebar - Enhanced Filter Panel */}

@@ -93,9 +93,11 @@ export function getFirstLevelSegments(
  */
 export function getFirstSegmentType(data: ComparisonData | null): string | null {
   if (!data || !data.dimensions.segments) return null
-  
-  const segmentTypes = Object.keys(data.dimensions.segments)
-  return segmentTypes.length > 0 ? segmentTypes[0] : null
+
+  const keys = Object.keys(data.dimensions.segments)
+  // Prefer the primary product hierarchy for presets (order of `segments` can vary)
+  if (keys.includes('By Product Type')) return 'By Product Type'
+  return keys.length > 0 ? keys[0] : null
 }
 
 /**
@@ -210,7 +212,7 @@ export function createTopMarketFilters(data: ComparisonData | null): Partial<Fil
     viewMode: 'geography-mode', // Geography on X-axis, segments as series
     geographies: topRegions,
     segments: firstLevelSegments,
-    segmentType: firstSegmentType || 'By Technology',
+    segmentType: firstSegmentType || 'By Product Type',
     yearRange: [2023, 2027],
     dataType: 'value'
   }
@@ -238,7 +240,7 @@ export function createGrowthLeadersFilters(data: ComparisonData | null): Partial
     viewMode: 'geography-mode', // Geography on X-axis, segments as series
     geographies: topRegions,
     segments: firstLevelSegments,
-    segmentType: firstSegmentType || 'By Technology',
+    segmentType: firstSegmentType || 'By Product Type',
     yearRange: [2025, 2031],
     dataType: 'value'
   }
@@ -266,7 +268,7 @@ export function createEmergingMarketsFilters(data: ComparisonData | null): Parti
     viewMode: 'geography-mode', // Geography on X-axis, segments as series
     geographies: topCountries,
     segments: firstLevelSegments,
-    segmentType: firstSegmentType || 'By Technology',
+    segmentType: firstSegmentType || 'By Product Type',
     yearRange: [2025, 2031],
     dataType: 'value'
   }

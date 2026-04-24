@@ -39,7 +39,11 @@ export function GroupedBarChart({ title, height = 400 }: GroupedBarChartProps) {
     const segmentsFromSameType = advancedSegments.filter(
       (seg: any) => seg.type === filters.segmentType
     )
-    const hasUserSelectedSegments = segmentsFromSameType.length > 0
+    // SegmentMultiSelect only fills filters.segments; advancedSegments may be empty. Still treat as explicit selection
+    // so we pass aggregationLevel null into filterData and show leaf records for hierarchical types.
+    const hasUserSelectedSegments =
+      segmentsFromSameType.length > 0 ||
+      (Array.isArray(filters.segments) && filters.segments.length > 0)
 
     // Determine effective aggregation level for BOTH filtering and chart preparation
     // When user selects a parent segment (like "Parenteral"), we want to show its children
@@ -161,6 +165,12 @@ export function GroupedBarChart({ title, height = 400 }: GroupedBarChartProps) {
     // Override: Don't stack if prepared data doesn't have stacked keys (e.g., Level 2 aggregation with Global fallback)
     let isStacked = (filters.viewMode === 'segment-mode' && filters.geographies.length > 1) ||
                       (filters.viewMode === 'geography-mode' && filters.segments.length > 1)
+
+    // prepareIntelligentMultiLevelData (aggregationLevel null + segment selection) sums into one value per
+    // geography (or segment) per year — it never writes "A::B" keys. Stacked <Bar dataKey> would all be undefined.
+    if (isStacked && !hasStackedKeys) {
+      isStacked = false
+    }
 
     // If all filtered records have the same geography (Global fallback) in segment mode,
     // disable stacking since we can't differentiate by geography

@@ -1,28 +1,48 @@
 {
   "Global": {
-    "By Type": {
-      "Sub-Normothermic Perfusion (20–34°C)": {},
-      "Warm or Normothermic Perfusion (35–37°C)": {}
+    "By Product Type": {
+      "Hot-Rolled Steel": {
+        "Work Rolls": {},
+        "Backup Rolls": {}
+      },
+      "Cold-Rolled Steel": {
+        "Work Rolls": {},
+        "Backup Rolls": {}
+      },
+      "Plates & Coils": {
+        "Mill Rolls for Plate Production": {},
+        "Coil Rolls": {}
+      }
     },
-    "By Organ Type": {
-      "Liver": {},
-      "Heart": {},
-      "Lung": {},
-      "Kidney": {},
-      "Others (Pancreas, Small bowel / Intestine, Composite Tissues / Limb Perfusion (emerging use cases))": {}
+    "By Mill Type": {
+      "Hot Rolling Mills": {},
+      "Cold Rolling Mills": {},
+      "Strip Mills": {}
     },
-    "Application / Use Case": {
-      "Organ Preservation": {},
-      "Viability Assessment": {},
-      "Physiologic Transport": {},
-      "Reconditioning Marginal Organs": {},
-      "Others (Research Use / Protocol development)": {}
+    "By Material Type": {
+      "Carbon Steel Mill Rolls": {},
+      "Alloy Steel Mill Rolls": {},
+      "Cast Iron Rolls": {},
+      "Composite Rolls": {},
+      "Others": {}
     },
-    "By End User": {
-      "Hospitals & Clinics": {},
-      "Specialty Clinic/Centers": {},
-      "Transplant Centers": {},
-      "Others (Research Institutes/Centers, Organ Procurement Organizations, etc.)": {}
+    "By Type of Roll": {
+      "High-Speed Steel (HSS) Rolls": {},
+      "Cemented Carbide Rolls": {},
+      "Sintered Rolls": {}
+    },
+    "By End-Use Industry": {
+      "Automotive Industry": {},
+      "Construction": {},
+      "Shipbuilding": {},
+      "Home Appliances": {},
+      "Packaging": {},
+      "Energy (Power Plants and Renewable Energy)": {},
+      "Other Industrial Applications": {}
+    },
+    "By Distribution Type": {
+      "Direct Sales": {},
+      "Indirect (via Distributors)": {}
     },
     "By Region": {
       "North America": {

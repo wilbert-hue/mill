@@ -40,7 +40,9 @@ export function MultiLineChart({ title, height = 400 }: MultiLineChartProps) {
       const segmentsFromSameType = advancedSegments.filter(
         (seg: any) => seg.type === filters.segmentType
       )
-      const hasSegmentsForCurrentType = segmentsFromSameType.length > 0
+      const hasSegmentsForCurrentType =
+        segmentsFromSameType.length > 0 ||
+        (Array.isArray(filters.segments) && filters.segments.length > 0)
 
       if (!hasSegmentsForCurrentType) {
         // No segments selected - use Level 2 to show parent segments aggregated
@@ -101,13 +103,13 @@ export function MultiLineChart({ title, height = 400 }: MultiLineChartProps) {
       // For segment mode with Level 2 aggregation, extract keys from prepared data
       series = extractSeriesFromPreparedData()
     } else if (filters.viewMode === 'geography-mode') {
-      // When multiple segments are selected, each line represents a geography
-      // Use selected geographies when Global data is used as fallback
+      // Use the same series keys as prepared data (e.g. region roll-up: U.S. + Canada -> North America).
+      // Raw record.geography from getUniqueGeographies can mismatch dataKey and render empty lines.
       const hasOnlyGlobalRecords = filtered.every(r => r.geography === 'Global')
       const hasNonGlobalSelection = filters.geographies.some(g => g !== 'Global')
       series = (hasOnlyGlobalRecords && hasNonGlobalSelection && !filters.geographies.includes('Global'))
         ? filters.geographies.filter(g => g !== 'Global')
-        : getUniqueGeographies(filtered)
+        : extractSeriesFromPreparedData()
     } else if (filters.viewMode === 'matrix') {
       // Matrix view - combine geography and segment
       const uniquePairs = new Set<string>()
