@@ -214,7 +214,9 @@ export function CustomerIntelligenceHeatmap({ title, height = 600, filePath }: C
       
       // Get end user segments from dimensions
       const endUserDimension =
-        data.dimensions.segments['By End-Use Industry'] || data.dimensions.segments['By End User']
+        data.dimensions.segments['By End-Use Industries'] ||
+        data.dimensions.segments['By End-Use Industry'] ||
+        data.dimensions.segments['By End User']
       const segments = endUserDimension?.items || []
 
       const allSegments = segments.length > 0 ? [...segments] : [...defaultSegments]

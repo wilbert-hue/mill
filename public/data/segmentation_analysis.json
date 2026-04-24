@@ -1,48 +1,52 @@
 {
   "Global": {
-    "By Product Type": {
-      "Hot-Rolled Steel": {
-        "Work Rolls": {},
-        "Backup Rolls": {}
-      },
-      "Cold-Rolled Steel": {
-        "Work Rolls": {},
-        "Backup Rolls": {}
-      },
-      "Plates & Coils": {
-        "Mill Rolls for Plate Production": {},
-        "Coil Rolls": {}
-      }
-    },
-    "By Mill Type": {
-      "Hot Rolling Mills": {},
-      "Cold Rolling Mills": {},
-      "Strip Mills": {}
-    },
-    "By Material Type": {
-      "Carbon Steel Mill Rolls": {},
-      "Alloy Steel Mill Rolls": {},
-      "Cast Iron Rolls": {},
-      "Composite Rolls": {},
+    "By Roll Type / Mill Position": {
+      "Work Rolls": {},
+      "Backup Rolls": {},
+      "Intermediate Rolls": {},
+      "Edger / Vertical Rolls": {},
+      "Pinch Rolls": {},
+      "Leveller Rolls": {},
+      "Skin-Pass Rolls": {},
       "Others": {}
     },
-    "By Type of Roll": {
-      "High-Speed Steel (HSS) Rolls": {},
-      "Cemented Carbide Rolls": {},
-      "Sintered Rolls": {}
+    "By Rolling Mill Line": {
+      "Hot Strip Mills": {},
+      "Cold Rolling Mills": {},
+      "Plate Mills": {},
+      "Steckel Mills": {},
+      "Bar Mills": {},
+      "Wire Rod Mills": {},
+      "Rail & Section Mills": {},
+      "Rebar Mills": {},
+      "Pipe & Tube Mills": {}
     },
-    "By End-Use Industry": {
+    "By Roll Size / Diameter Range": {
+      "Below 300 mm": {},
+      "300–600 mm": {},
+      "600–1,000 mm": {},
+      "1,000–1,500 mm": {},
+      "Above 1,500 mm": {}
+    },
+    "By End-Use Industries": {
       "Automotive Industry": {},
-      "Construction": {},
+      "Construction & Infrastructure": {},
+      "Oil & Gas Industry": {},
       "Shipbuilding": {},
-      "Home Appliances": {},
-      "Packaging": {},
-      "Energy (Power Plants and Renewable Energy)": {},
-      "Other Industrial Applications": {}
+      "Energy & Power Generation": {},
+      "Aerospace & Defense": {},
+      "Heavy Machinery & Equipment": {},
+      "Consumer Goods": {},
+      "Steel Service Centers & Processing": {},
+      "Electronics Industry": {},
+      "Others, (Packaging Industry, etc.)": {}
     },
     "By Distribution Type": {
       "Direct Sales": {},
-      "Indirect (via Distributors)": {}
+      "Indirect (via Distributors)": {},
+      "Steel Service Centers & Processing": {},
+      "Electronics Industry": {},
+      "Others, (Packaging Industry, etc.)": {}
     },
     "By Region": {
       "North America": {

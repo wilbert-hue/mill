@@ -261,7 +261,7 @@ export function filterData(
 
   // Precompute geographies that have an aggregated *parent* row for a given segment name.
   // We only skip leaf rows when a parent is selected if that parent row actually exists; many
-  // JSON hierarchies (e.g. By Product Type) only store leaf time series, so we must show leaves.
+  // JSON hierarchies with parent+leaf paths only store leaf time series, so we must show leaves.
   const geographyHasAggregatedParent = new Set<string>()
   if (filters.segmentType) {
     let selectedForParentCheck: string[] = []

@@ -14,7 +14,7 @@ interface SelectedSegmentItem {
 export function CompactFilterPanel() {
   const { data, filters, updateFilters } = useDashboardStore()
   const [selectedSegmentType, setSelectedSegmentType] = useState<string>(
-    filters.segmentType || (data?.dimensions?.segments ? Object.keys(data.dimensions.segments)[0] : 'By Product Type')
+    filters.segmentType || (data?.dimensions?.segments ? Object.keys(data.dimensions.segments)[0] : 'By Roll Type / Mill Position')
   )
   const [selectedSegments, setSelectedSegments] = useState<SelectedSegmentItem[]>([])
   const [currentSegmentSelection, setCurrentSegmentSelection] = useState<string>('')

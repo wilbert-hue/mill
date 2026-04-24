@@ -35,14 +35,10 @@ export function createMockData(): ComparisonData {
         all_geographies: ['Global']
       },
       segments: {
-        'By End-Use*Product Type': {
-          type: 'hierarchical',
+        'By Roll Type / Mill Position': {
+          type: 'flat',
           items: [],
-          hierarchy: {},
-          b2b_hierarchy: {},
-          b2c_hierarchy: {},
-          b2b_items: [],
-          b2c_items: []
+          hierarchy: {}
         }
       }
     },

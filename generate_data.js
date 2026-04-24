@@ -4,7 +4,6 @@ const path = require('path');
 // Years: 2021-2033
 const years = [2021, 2022, 2023, 2024, 2025, 2026, 2027, 2028, 2029, 2030, 2031, 2032, 2033];
 
-// Geographies with their region grouping
 const regions = {
   "North America": ["U.S.", "Canada"],
   "Europe": ["U.K.", "Germany", "Italy", "France", "Spain", "Russia", "Rest of Europe"],
@@ -13,60 +12,58 @@ const regions = {
   "Middle East & Africa": ["GCC", "South Africa", "Rest of Middle East & Africa"]
 };
 
-/** Flat segment type: segment name -> share of regional total (sums to 1) */
+/** All segment types are flat (shares sum to 1.0 per type) */
 const flatSegmentTypes = {
-  "By Mill Type": {
-    "Hot Rolling Mills": 0.4,
-    "Cold Rolling Mills": 0.35,
-    "Strip Mills": 0.25
+  "By Roll Type / Mill Position": {
+    "Work Rolls": 0.16,
+    "Backup Rolls": 0.15,
+    "Intermediate Rolls": 0.12,
+    "Edger / Vertical Rolls": 0.08,
+    "Pinch Rolls": 0.08,
+    "Leveller Rolls": 0.1,
+    "Skin-Pass Rolls": 0.12,
+    "Others": 0.19
   },
-  "By Material Type": {
-    "Carbon Steel Mill Rolls": 0.32,
-    "Alloy Steel Mill Rolls": 0.26,
-    "Cast Iron Rolls": 0.18,
-    "Composite Rolls": 0.14,
-    "Others": 0.1
+  "By Rolling Mill Line": {
+    "Hot Strip Mills": 0.15,
+    "Cold Rolling Mills": 0.14,
+    "Plate Mills": 0.12,
+    "Steckel Mills": 0.08,
+    "Bar Mills": 0.1,
+    "Wire Rod Mills": 0.1,
+    "Rail & Section Mills": 0.1,
+    "Rebar Mills": 0.1,
+    "Pipe & Tube Mills": 0.11
   },
-  "By Type of Roll": {
-    "High-Speed Steel (HSS) Rolls": 0.45,
-    "Cemented Carbide Rolls": 0.32,
-    "Sintered Rolls": 0.23
+  "By Roll Size / Diameter Range": {
+    "Below 300 mm": 0.24,
+    "300–600 mm": 0.28,
+    "600–1,000 mm": 0.2,
+    "1,000–1,500 mm": 0.16,
+    "Above 1,500 mm": 0.12
   },
-  "By End-Use Industry": {
-    "Automotive Industry": 0.28,
-    "Construction": 0.18,
-    "Shipbuilding": 0.08,
-    "Home Appliances": 0.12,
-    "Packaging": 0.1,
-    "Energy (Power Plants and Renewable Energy)": 0.14,
-    "Other Industrial Applications": 0.1
+  "By End-Use Industries": {
+    "Automotive Industry": 0.12,
+    "Construction & Infrastructure": 0.14,
+    "Oil & Gas Industry": 0.08,
+    "Shipbuilding": 0.05,
+    "Energy & Power Generation": 0.1,
+    "Aerospace & Defense": 0.08,
+    "Heavy Machinery & Equipment": 0.1,
+    "Consumer Goods": 0.07,
+    "Steel Service Centers & Processing": 0.1,
+    "Electronics Industry": 0.08,
+    "Others, (Packaging Industry, etc.)": 0.08
   },
   "By Distribution Type": {
-    "Direct Sales": 0.58,
-    "Indirect (via Distributors)": 0.42
+    "Direct Sales": 0.32,
+    "Indirect (via Distributors)": 0.28,
+    "Steel Service Centers & Processing": 0.16,
+    "Electronics Industry": 0.12,
+    "Others, (Packaging Industry, etc.)": 0.12
   }
 };
 
-/** Hierarchical: parent -> { share of regional total, children: leaf -> share within parent } */
-const productTypeHierarchy = {
-  "Hot-Rolled Steel": {
-    share: 0.36,
-    children: { "Work Rolls": 0.55, "Backup Rolls": 0.45 }
-  },
-  "Cold-Rolled Steel": {
-    share: 0.34,
-    children: { "Work Rolls": 0.55, "Backup Rolls": 0.45 }
-  },
-  "Plates & Coils": {
-    share: 0.3,
-    children: {
-      "Mill Rolls for Plate Production": 0.52,
-      "Coil Rolls": 0.48
-    }
-  }
-};
-
-// Regional base values (USD Million) for 2021 - total market per region (mill roll equipment / rolls)
 const regionBaseValues = {
   "North America": 1850,
   "Europe": 1420,
@@ -91,44 +88,65 @@ const regionGrowthRates = {
   "Middle East & Africa": 0.051
 };
 
-const segmentGrowthMultipliersFlat = {
-  "By Mill Type": {
-    "Hot Rolling Mills": 1.0,
-    "Cold Rolling Mills": 1.04,
-    "Strip Mills": 0.98
-  },
-  "By Material Type": {
-    "Carbon Steel Mill Rolls": 0.97,
-    "Alloy Steel Mill Rolls": 1.05,
-    "Cast Iron Rolls": 0.95,
-    "Composite Rolls": 1.12,
-    "Others": 1.0
-  },
-  "By Type of Roll": {
-    "High-Speed Steel (HSS) Rolls": 1.06,
-    "Cemented Carbide Rolls": 1.1,
-    "Sintered Rolls": 0.99
-  },
-  "By End-Use Industry": {
-    "Automotive Industry": 1.05,
-    "Construction": 1.0,
-    "Shipbuilding": 0.98,
-    "Home Appliances": 1.04,
-    "Packaging": 1.02,
-    "Energy (Power Plants and Renewable Energy)": 1.08,
-    "Other Industrial Applications": 1.0
-  },
-  "By Distribution Type": {
-    "Direct Sales": 1.02,
-    "Indirect (via Distributors)": 0.99
+/** Relative growth multipliers (× regional CAGR) per leaf segment */
+const segmentGrowthMultipliersFlat = (() => {
+  const m = {
+    "By Roll Type / Mill Position": {
+      "Work Rolls": 1.02,
+      "Backup Rolls": 0.99,
+      "Intermediate Rolls": 1.0,
+      "Edger / Vertical Rolls": 1.01,
+      "Pinch Rolls": 0.98,
+      "Leveller Rolls": 1.03,
+      "Skin-Pass Rolls": 1.04,
+      "Others": 0.97
+    },
+    "By Rolling Mill Line": {
+      "Hot Strip Mills": 1.02,
+      "Cold Rolling Mills": 1.04,
+      "Plate Mills": 1.0,
+      "Steckel Mills": 0.99,
+      "Bar Mills": 1.01,
+      "Wire Rod Mills": 1.02,
+      "Rail & Section Mills": 0.98,
+      "Rebar Mills": 1.03,
+      "Pipe & Tube Mills": 1.01
+    },
+    "By Roll Size / Diameter Range": {
+      "Below 300 mm": 1.0,
+      "300–600 mm": 1.02,
+      "600–1,000 mm": 1.01,
+      "1,000–1,500 mm": 0.99,
+      "Above 1,500 mm": 0.98
+    },
+    "By End-Use Industries": {
+      "Automotive Industry": 1.05,
+      "Construction & Infrastructure": 1.0,
+      "Oil & Gas Industry": 0.99,
+      "Shipbuilding": 0.98,
+      "Energy & Power Generation": 1.06,
+      "Aerospace & Defense": 1.04,
+      "Heavy Machinery & Equipment": 1.02,
+      "Consumer Goods": 1.01,
+      "Steel Service Centers & Processing": 1.0,
+      "Electronics Industry": 1.08,
+      "Others, (Packaging Industry, etc.)": 0.99
+    },
+    "By Distribution Type": {
+      "Direct Sales": 1.02,
+      "Indirect (via Distributors)": 0.99,
+      "Steel Service Centers & Processing": 1.0,
+      "Electronics Industry": 1.05,
+      "Others, (Packaging Industry, etc.)": 0.98
+    }
+  };
+  for (const segType of Object.keys(flatSegmentTypes)) {
+    for (const name of Object.keys(flatSegmentTypes[segType])) {
+      if (!m[segType][name]) m[segType][name] = 1.0;
+    }
   }
-};
-
-const segmentGrowthMultipliersProduct = {
-  "Hot-Rolled Steel": { "Work Rolls": 1.0, "Backup Rolls": 0.99 },
-  "Cold-Rolled Steel": { "Work Rolls": 1.04, "Backup Rolls": 1.02 },
-  "Plates & Coils": { "Mill Rolls for Plate Production": 1.0, "Coil Rolls": 1.03 }
-};
+  return m;
+})();
 
 const volumePerMillionUSD = 0.45;
 
@@ -173,26 +191,6 @@ function fillFlatSegmentType(target, segType, regionBase, regionGrowth, isVolume
   }
 }
 
-function fillProductTypeHierarchy(target, regionBase, regionGrowth, isVolume, countryGrowthOverride) {
-  const roundFn = isVolume ? roundToInt : roundTo1;
-  const growth = countryGrowthOverride ?? regionGrowth;
-  target["By Product Type"] = {};
-  for (const [parentName, { share, children }] of Object.entries(productTypeHierarchy)) {
-    target["By Product Type"][parentName] = {};
-    for (const [childName, cShare] of Object.entries(children)) {
-      const mult = (segmentGrowthMultipliersProduct[parentName] && segmentGrowthMultipliersProduct[parentName][childName]) || 1;
-      const segGrowth = growth * mult;
-      const segBase = regionBase * share * cShare;
-      const shareVariation = 1 + (seededRandom() - 0.5) * 0.08;
-      target["By Product Type"][parentName][childName] = generateTimeSeries(
-        segBase * shareVariation,
-        segGrowth,
-        roundFn
-      );
-    }
-  }
-}
-
 function generateData(isVolume) {
   const data = {};
   const roundFn = isVolume ? roundToInt : roundTo1;
@@ -203,8 +201,6 @@ function generateData(isVolume) {
     const regionGrowth = regionGrowthRates[regionName];
 
     data[regionName] = {};
-
-    fillProductTypeHierarchy(data[regionName], regionBase, regionGrowth, isVolume, null);
     for (const segType of Object.keys(flatSegmentTypes)) {
       fillFlatSegmentType(data[regionName], segType, regionBase, regionGrowth, isVolume, null);
     }
@@ -225,7 +221,6 @@ function generateData(isVolume) {
       const countryGrowth = regionGrowth * countryGrowthVariation;
 
       data[country] = {};
-      fillProductTypeHierarchy(data[country], countryBase, countryGrowth, isVolume, countryGrowth);
       for (const segType of Object.keys(flatSegmentTypes)) {
         const segTypeObj = {};
         for (const [segName, share] of Object.entries(flatSegmentTypes[segType])) {
@@ -252,5 +247,5 @@ const outDir = path.join(__dirname, 'public', 'data');
 fs.writeFileSync(path.join(outDir, 'value.json'), JSON.stringify(valueData, null, 2));
 fs.writeFileSync(path.join(outDir, 'volume.json'), JSON.stringify(volumeData, null, 2));
 
-console.log('Generated value.json and volume.json (mill roll segments)');
+console.log('Generated value/volume (flat mill-roll segments v2)');
 console.log('Segment types on North America:', Object.keys(valueData['North America']));
