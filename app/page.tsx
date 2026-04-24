@@ -222,15 +222,7 @@ export default function DashboardPage() {
         >
           <p>
             <span className="font-semibold">NOTE: </span>
-            All the data in the dashboard is demo data. No real-world data is related to this. Source:{' '}
-            <a
-              href="https://github.com/wilbert-hue/mill"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-medium text-amber-900 underline decoration-amber-400 underline-offset-2 hover:text-amber-950"
-            >
-              https://github.com/wilbert-hue/mill
-            </a>
+            All the data in the dashboard is demo data. No real-world data is related to this.
           </p>
         </div>
 
