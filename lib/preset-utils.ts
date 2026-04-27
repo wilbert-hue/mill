@@ -96,7 +96,7 @@ export function getFirstSegmentType(data: ComparisonData | null): string | null 
 
   const keys = Object.keys(data.dimensions.segments)
   // Prefer the primary product hierarchy for presets (order of `segments` can vary)
-  if (keys.includes('By Roll Type / Mill Position')) return 'By Roll Type / Mill Position'
+  if (keys.includes('By Rolling Process')) return 'By Rolling Process'
   return keys.length > 0 ? keys[0] : null
 }
 
@@ -212,7 +212,7 @@ export function createTopMarketFilters(data: ComparisonData | null): Partial<Fil
     viewMode: 'geography-mode', // Geography on X-axis, segments as series
     geographies: topRegions,
     segments: firstLevelSegments,
-    segmentType: firstSegmentType || 'By Roll Type / Mill Position',
+    segmentType: firstSegmentType || 'By Rolling Process',
     yearRange: [2023, 2027],
     dataType: 'value'
   }
@@ -240,7 +240,7 @@ export function createGrowthLeadersFilters(data: ComparisonData | null): Partial
     viewMode: 'geography-mode', // Geography on X-axis, segments as series
     geographies: topRegions,
     segments: firstLevelSegments,
-    segmentType: firstSegmentType || 'By Roll Type / Mill Position',
+    segmentType: firstSegmentType || 'By Rolling Process',
     yearRange: [2025, 2031],
     dataType: 'value'
   }
@@ -268,7 +268,7 @@ export function createEmergingMarketsFilters(data: ComparisonData | null): Parti
     viewMode: 'geography-mode', // Geography on X-axis, segments as series
     geographies: topCountries,
     segments: firstLevelSegments,
-    segmentType: firstSegmentType || 'By Roll Type / Mill Position',
+    segmentType: firstSegmentType || 'By Rolling Process',
     yearRange: [2025, 2031],
     dataType: 'value'
   }

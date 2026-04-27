@@ -1,16 +1,10 @@
 {
   "Global": {
-    "By Roll Type / Mill Position": {
-      "Work Rolls": {},
-      "Backup Rolls": {},
-      "Intermediate Rolls": {},
-      "Edger / Vertical Rolls": {},
-      "Pinch Rolls": {},
-      "Leveller Rolls": {},
-      "Skin-Pass Rolls": {},
-      "Others": {}
+    "By Rolling Process": {
+      "Hot Rolling": {},
+      "Cold Rolling": {}
     },
-    "By Rolling Mill Line": {
+    "By Mill Type / Mill Line": {
       "Hot Strip Mills": {},
       "Cold Rolling Mills": {},
       "Plate Mills": {},
@@ -19,7 +13,20 @@
       "Wire Rod Mills": {},
       "Rail & Section Mills": {},
       "Rebar Mills": {},
-      "Pipe & Tube Mills": {}
+      "Pipe & Tube Mills": {},
+      "Others": {}
+    },
+    "By Material Type": {
+      "Cast Iron Rolls": {},
+      "Steel Rolls": {},
+      "High-Speed Steel Rolls": {},
+      "Others": {}
+    },
+    "By Roll Function": {
+      "Work Rolls": {},
+      "Backup Rolls": {},
+      "Intermediate Rolls": {},
+      "Others (Auxiliary and finishing rolls, etc.)": {}
     },
     "By Roll Size / Diameter Range": {
       "Below 300 mm": {},
@@ -43,10 +50,7 @@
     },
     "By Distribution Type": {
       "Direct Sales": {},
-      "Indirect (via Distributors)": {},
-      "Steel Service Centers & Processing": {},
-      "Electronics Industry": {},
-      "Others, (Packaging Industry, etc.)": {}
+      "Indirect (via Distributors)": {}
     },
     "By Region": {
       "North America": {

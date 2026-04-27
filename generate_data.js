@@ -14,26 +14,33 @@ const regions = {
 
 /** All segment types are flat (shares sum to 1.0 per type) */
 const flatSegmentTypes = {
-  "By Roll Type / Mill Position": {
-    "Work Rolls": 0.16,
-    "Backup Rolls": 0.15,
-    "Intermediate Rolls": 0.12,
-    "Edger / Vertical Rolls": 0.08,
-    "Pinch Rolls": 0.08,
-    "Leveller Rolls": 0.1,
-    "Skin-Pass Rolls": 0.12,
-    "Others": 0.19
+  "By Rolling Process": {
+    "Hot Rolling": 0.52,
+    "Cold Rolling": 0.48
   },
-  "By Rolling Mill Line": {
-    "Hot Strip Mills": 0.15,
-    "Cold Rolling Mills": 0.14,
-    "Plate Mills": 0.12,
+  "By Mill Type / Mill Line": {
+    "Hot Strip Mills": 0.13,
+    "Cold Rolling Mills": 0.12,
+    "Plate Mills": 0.11,
     "Steckel Mills": 0.08,
     "Bar Mills": 0.1,
     "Wire Rod Mills": 0.1,
     "Rail & Section Mills": 0.1,
-    "Rebar Mills": 0.1,
-    "Pipe & Tube Mills": 0.11
+    "Rebar Mills": 0.09,
+    "Pipe & Tube Mills": 0.1,
+    "Others": 0.07
+  },
+  "By Material Type": {
+    "Cast Iron Rolls": 0.24,
+    "Steel Rolls": 0.34,
+    "High-Speed Steel Rolls": 0.3,
+    "Others": 0.12
+  },
+  "By Roll Function": {
+    "Work Rolls": 0.36,
+    "Backup Rolls": 0.26,
+    "Intermediate Rolls": 0.14,
+    "Others (Auxiliary and finishing rolls, etc.)": 0.24
   },
   "By Roll Size / Diameter Range": {
     "Below 300 mm": 0.24,
@@ -43,8 +50,8 @@ const flatSegmentTypes = {
     "Above 1,500 mm": 0.12
   },
   "By End-Use Industries": {
-    "Automotive Industry": 0.12,
-    "Construction & Infrastructure": 0.14,
+    "Automotive Industry": 0.11,
+    "Construction & Infrastructure": 0.12,
     "Oil & Gas Industry": 0.08,
     "Shipbuilding": 0.05,
     "Energy & Power Generation": 0.1,
@@ -53,14 +60,11 @@ const flatSegmentTypes = {
     "Consumer Goods": 0.07,
     "Steel Service Centers & Processing": 0.1,
     "Electronics Industry": 0.08,
-    "Others, (Packaging Industry, etc.)": 0.08
+    "Others, (Packaging Industry, etc.)": 0.11
   },
   "By Distribution Type": {
-    "Direct Sales": 0.32,
-    "Indirect (via Distributors)": 0.28,
-    "Steel Service Centers & Processing": 0.16,
-    "Electronics Industry": 0.12,
-    "Others, (Packaging Industry, etc.)": 0.12
+    "Direct Sales": 0.55,
+    "Indirect (via Distributors)": 0.45
   }
 };
 
@@ -88,20 +92,10 @@ const regionGrowthRates = {
   "Middle East & Africa": 0.051
 };
 
-/** Relative growth multipliers (× regional CAGR) per leaf segment */
 const segmentGrowthMultipliersFlat = (() => {
   const m = {
-    "By Roll Type / Mill Position": {
-      "Work Rolls": 1.02,
-      "Backup Rolls": 0.99,
-      "Intermediate Rolls": 1.0,
-      "Edger / Vertical Rolls": 1.01,
-      "Pinch Rolls": 0.98,
-      "Leveller Rolls": 1.03,
-      "Skin-Pass Rolls": 1.04,
-      "Others": 0.97
-    },
-    "By Rolling Mill Line": {
+    "By Rolling Process": { "Hot Rolling": 1.02, "Cold Rolling": 1.0 },
+    "By Mill Type / Mill Line": {
       "Hot Strip Mills": 1.02,
       "Cold Rolling Mills": 1.04,
       "Plate Mills": 1.0,
@@ -110,7 +104,20 @@ const segmentGrowthMultipliersFlat = (() => {
       "Wire Rod Mills": 1.02,
       "Rail & Section Mills": 0.98,
       "Rebar Mills": 1.03,
-      "Pipe & Tube Mills": 1.01
+      "Pipe & Tube Mills": 1.01,
+      "Others": 0.99
+    },
+    "By Material Type": {
+      "Cast Iron Rolls": 0.99,
+      "Steel Rolls": 1.01,
+      "High-Speed Steel Rolls": 1.05,
+      "Others": 0.98
+    },
+    "By Roll Function": {
+      "Work Rolls": 1.02,
+      "Backup Rolls": 0.99,
+      "Intermediate Rolls": 1.0,
+      "Others (Auxiliary and finishing rolls, etc.)": 0.98
     },
     "By Roll Size / Diameter Range": {
       "Below 300 mm": 1.0,
@@ -134,15 +141,13 @@ const segmentGrowthMultipliersFlat = (() => {
     },
     "By Distribution Type": {
       "Direct Sales": 1.02,
-      "Indirect (via Distributors)": 0.99,
-      "Steel Service Centers & Processing": 1.0,
-      "Electronics Industry": 1.05,
-      "Others, (Packaging Industry, etc.)": 0.98
+      "Indirect (via Distributors)": 0.99
     }
   };
   for (const segType of Object.keys(flatSegmentTypes)) {
     for (const name of Object.keys(flatSegmentTypes[segType])) {
-      if (!m[segType][name]) m[segType][name] = 1.0;
+      if (!m[segType]) m[segType] = {};
+      if (m[segType][name] == null) m[segType][name] = 1.0;
     }
   }
   return m;
@@ -247,5 +252,5 @@ const outDir = path.join(__dirname, 'public', 'data');
 fs.writeFileSync(path.join(outDir, 'value.json'), JSON.stringify(valueData, null, 2));
 fs.writeFileSync(path.join(outDir, 'volume.json'), JSON.stringify(volumeData, null, 2));
 
-console.log('Generated value/volume (flat mill-roll segments v2)');
+console.log('Generated value/volume (segments per latest images)');
 console.log('Segment types on North America:', Object.keys(valueData['North America']));

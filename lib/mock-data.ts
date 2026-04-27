@@ -35,7 +35,7 @@ export function createMockData(): ComparisonData {
         all_geographies: ['Global']
       },
       segments: {
-        'By Roll Type / Mill Position': {
+        'By Rolling Process': {
           type: 'flat',
           items: [],
           hierarchy: {}
